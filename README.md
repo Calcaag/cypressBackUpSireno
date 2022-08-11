@@ -8,3 +8,7 @@ Just in case downloading is an issue again
  3) Open a terminal and run these commands:
 > 1) npm run install:DevDependencies
 > 2) npm run cypress:execute
+
+
+> NodeJS v16.5.0
+> Cypress v10.4.0
