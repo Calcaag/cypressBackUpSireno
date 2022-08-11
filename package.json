@@ -1,0 +1,20 @@
+{
+  "name": "cypresscopy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "cypress:execute": "cypress run --headed",
+    "install:DevDependencies":"npm install --only=dev"
+  },
+  "keywords": [
+    "cypress"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^10.4.0",
+    "cypress-fill-command": "^1.0.2",
+    "cypress-xpath": "^2.0.1"
+  },
+  "description": ""
+}
