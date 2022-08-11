@@ -10,5 +10,5 @@ Just in case downloading is an issue again
 > 2) npm run cypress:execute
 
 
-> NodeJS v16.5.0 and 
-> Cypress v10.4.0
+# Versions used:
+-- NodeJS v16.5.0 and Cypress v10.4.0
