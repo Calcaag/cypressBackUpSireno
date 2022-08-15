@@ -1,4 +1,5 @@
 require("cypress-xpath");
+let LOCAL_STORAGE_MEMORY = {};
 
 Cypress.Commands.add("addToCart", () => {
   cy.fixture("elements").then((el) => {
@@ -14,9 +15,9 @@ Cypress.Commands.add("inputItems", (city) => {
     cy.get(el.order_modal).should("be.visible");
     cy.xpath(el.pickup_button).click();
     cy.get(el.chooseCity_dropdown).select(city, { force: true });
-    cy.wait(500);
+    cy.wait(3000);
     cy.get(el.chooseStore_dropdown).select(1, { force: true });
-    cy.wait(300);
+    cy.wait(2000);
     cy.xpath(el.confirmOrder_button).click();
     cy.wait(3000);
   });
@@ -39,21 +40,36 @@ Cypress.Commands.add("verifyItemValue", () => {
         let selectedItemPrice = price1.trim();
         cy.wrap(selectedItemPrice).as("selectedItemPrice");
       });
-    //There's token expiration modal coming in and out and it'll log the user out so it's kinda weird
-    cy.wait(500);
-    cy.get(el.cart_header_button).click({ force: true });
-    cy.wait(500);
-    cy.get(el.cartItem_name)
-      .invoke("text")
-      .should((item2) => {
-        let itemCart_name = item2.trim();
-        expect(selectedItemName).to.eq(itemCart_name);
-      });
-    cy.get(el.cartItem_price)
-      .invoke("text")
-      .should((price2) => {
-        let itemCart_price = price2.trim();
-        expect(selectedItemPrice).to.eq(itemCart_price);
-      });
+    cy.wait(2000);
+    cy.xpath(el.cart_header_button).click({ force: true });
+    cy.wait(10000);
+    cy.get("@selectedItemName").then((selectedItemName) => {
+      cy.xpath(el.cartItem_name)
+        .invoke("text")
+        .should((item2) => {
+          let itemCart_name = item2.trim();
+          expect(selectedItemName).to.eq(itemCart_name);
+        });
+    });
+    cy.get("@selectedItemPrice").then((selectedItemPrice) => {
+      cy.xpath(el.cartItem_price)
+        .invoke("text")
+        .should((price2) => {
+          let itemCart_price = price2.trim();
+          expect(selectedItemPrice).to.contain(itemCart_price);
+        });
+    });
+  });
+});
+
+Cypress.Commands.add("saveLocalStorage", () => {
+  Object.keys(localStorage).forEach((key) => {
+    LOCAL_STORAGE_MEMORY[key] = localStorage[key];
+  });
+});
+
+Cypress.Commands.add("restoreLocalStorage", () => {
+  Object.keys(LOCAL_STORAGE_MEMORY).forEach((key) => {
+    localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key]);
   });
 });
